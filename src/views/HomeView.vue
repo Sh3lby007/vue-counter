@@ -8,24 +8,26 @@
     <div>
       <button @click="decreaseCounter(2)" class="btn">--</button>
       <button @click="decreaseCounter(1)" class="btn">-</button>
-      <span class="counter">{{counterData.count}}</span>
+      <span class="counter">{{ counterData.count }}</span>
       <button @click="increaseCounter(1)" class="btn">+</button>
       <button @click="increaseCounter(2)" class="btn">++</button>
     </div>
-            <br>
+    <br>
     <p>This counter is {{ determineExpression }}</p>
-    
+
     <div class="edit">
       <h4>Edit Counter title</h4>
-      <input v-model="counterData.title" type="">
+      <input v-model="counterData.title" type="text" v-autofocus>
     </div>
-  
+
   </div>
 </template>
 
-
 <script setup>
-import { ref, reactive, computed, watch} from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
+import { vAutofocus } from '../directives/vAutofocus';
+
+
 // const counter = ref(0),
 //       counterTitle = ref('My Counter')
 
@@ -40,15 +42,15 @@ const counterData = reactive({
 
 // If we use a ref data property, the watch expression is simply 
 // watch(count) if we used the above ref data. We can't do the same thing to a reactive object since it is a nested data property. 
-watch(()=> counterData.count, (newCount, oldCount) => {
-  if(newCount ===20)
-  alert('You got it')
-}) 
+watch(() => counterData.count, (newCount, oldCount) => {
+  if (newCount === 20)
+    alert('You got it')
+})
 
 // computed properties are usually generated based on reactive data, which are cached and updated only when the dependencies change
 const determineExpression = computed(() => {
   if (counterData.count % 2 === 0) return 'even'
-  return 'odd' 
+  return 'odd'
 })
 
 const increaseCounter = amount => {
@@ -56,16 +58,17 @@ const increaseCounter = amount => {
 }
 
 function decreaseCounter(amount) {
-  counterData.count -=amount
+  counterData.count -= amount
 }
+
 </script>
 
-Option API way to using data(), computed, watch and hooks
+<!-- Option API way to using data(), computed, watch and hooks
 
 <script>
 export default {
   data() {
-    return{
+    return {
       count: 0
     }
   },
@@ -85,10 +88,17 @@ export default {
   },
   unmounted() {
     console.log('unmounted')
+  },
+  directives: {
+    autofocus: {
+      mounted(el) {
+        el.focus()
+      }
+    }
   }
 }
 
-</script>
+</script> -->
 
 <!-- Original way of using composition API before script setup was introduced -->
 <!-- <script>
@@ -141,7 +151,7 @@ export default {
   padding: 20px;
 }
 
-.btn .counter{
+.btn .counter {
   font-size: 40px;
   margin: 200px;
 }
